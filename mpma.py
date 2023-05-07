@@ -55,30 +55,32 @@ class Se:
 				header3 = driver.find_element(By.XPATH, e)
 				print(header3.text)
 
-				# field names 
-				fields = ['Name', 'Branch', 'Year', 'CGPA'] 
+				#field names 
+				fields = [header1.text, header2.text, header3.text] 
 					
-				# data rows of csv file 
-				rows = [ ['Nikhil', 'COE', '2', '9.0'], 
-						 ['Sanchit', 'COE', '2', '9.1'], 
-						 ['Aditya', 'IT', '2', '9.3'], 
-						 ['Sagar', 'SE', '1', '9.5'], 
-						 ['Prateek', 'MCE', '3', '7.8'], 
-						 ['Sahil', 'EP', '2', '9.1']] 
+				#data rows of csv file 
+				rows = [
+					['Nikhil', 'COE', '2', '9.0'], 
+					['Sanchit', 'COE', '2', '9.1'], 
+					['Aditya', 'IT', '2', '9.3'], 
+					['Sagar', 'SE', '1', '9.5'], 
+					['Prateek', 'MCE', '3', '7.8'], 
+					['Sahil', 'EP', '2', '9.1']
+				]
 					
-				# name of csv file 
+				#name of csv file 
 				filename = "university_records.csv"
 					
-				# writing to csv file 
+				#writing to csv file 
 				with open(filename, 'w') as csvfile: 
-					# creating a csv writer object 
+					#creating a csv writer object 
 					csvwriter = csv.writer(csvfile) 
 						
-					# writing the fields 
+					#writing the fields 
 					csvwriter.writerow(fields) 
 						
-					# writing the data rows 
-					csvwriter.writerows(rows
+					#writing the data rows 
+					csvwriter.writerows(rows)
 
 			driver.back()
 
