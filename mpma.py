@@ -34,7 +34,6 @@ class Se:
 			header = driver.find_element(By.XPATH, path)
 			fields.append(header.text)
 
-		print(fields)
 		return fields 
 
 
@@ -59,23 +58,34 @@ class Se:
 					
 				#writing the fields 
 				csvwriter.writerow(fields) 
-	
-				li = driver.find_elements(By.CLASS_NAME, "flexi")
 
-				for element in li:
+				arr = []
+				rows, cols = 1, 19 
+				for i in range(rows):
+					col = []
+					for j in range(1, cols):
+						path = "//*[@id='flexicontent']/div[6]/ul/li[" + str(j) + "]/div/div"
 
-					#data rows of csv file 
-					rows = [
-						['Nikhil', 'COE', '2', '9.0'], 
-						['Sanchit', 'COE', '2', '9.1'], 
-						['Aditya', 'IT', '2', '9.3'], 
-						['Sagar', 'SE', '1', '9.5'], 
-						['Prateek', 'MCE', '3', '7.8'], 
-						['Sahil', 'EP', '2', '9.1']
-					]
+						li = driver.find_element(By.XPATH, path)
 						
-					#writing the data rows 
-					csvwriter.writerows(rows)
+						col.append(li.text)
+					arr.append(col)
+				print(arr)	
+
+				'''
+				fields = []
+				for loop in range(1, 19):
+
+					path = "//*[@id='flexicontent']/div[6]/ul/li[" + str(loop) + "]/div/div"
+
+					li = driver.find_element(By.XPATH, path)
+					
+					fields.append(li.text)
+				'''
+
+				#writing the data rows 
+				#csvwriter.writerows(rows)
+				csvwriter.writerows(arr)
 
 			driver.back()
 
