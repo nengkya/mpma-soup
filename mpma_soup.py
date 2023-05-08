@@ -56,19 +56,11 @@ class Se:
 		return fields 
 
 
-	def get_company(self, driver, list1, list2):
-		#name of csv file 
-		filename = "company.csv"
-
-		with open(filename, 'w') as csvfile: 
-			#creating a csv writer object 
-			csvwriter = csv.writer(csvfile) 
-
-			#writing the fields 
-			fields = self.get_header(driver)
-			csvwriter.writerow(fields) 
+	def get_company(self, driver, list1, list2, csvwriter):
 
 			for tr in range(list1, list2 + 1):
+				if tr  < 11:
+					driver.execute_script("window.scrollTo(0,  650)")
 				if tr == 11:
 					driver.execute_script("window.scrollTo(0, 1200)")
 				Pause(driver).pause(1)
@@ -90,22 +82,12 @@ class Se:
 				soup = BeautifulSoup(req.text, 'lxml')
 
 				for ul in soup.select("ul.flexi"):
-					i = 1
-					for div in ul.select("div"):
-						if (not (i % 2 == 0)) and (not i == 27):
-							print(i, div.text)
+					for div in ul:
+						col.append(div.text)
+						print(div.text)
 
-						if i == 27:
-							path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[14]/div[1]/div[1]'
-							li = driver.find_element(By.XPATH, path)
-							print(p)
-							print(path)
-							print(li.text)
-
-						i += 1
+					arr.append(col)
 					print("-" * 60)
-
-				arr.append(col)
 
 				#writing the data rows 
 				csvwriter.writerows(arr)
@@ -119,7 +101,25 @@ class Se:
 		driver = webdriver.Edge(options = option)
 		driver.get('https://www.mpmadirectory.org.my/all-members')
 
-		self.get_company(driver, 1, 1)
+		#name of csv file 
+		filename = "company.csv"
+
+		with open(filename, 'w') as csvfile: 
+			#creating a csv writer object 
+			csvwriter = csv.writer(csvfile) 
+
+			for loop in range(1, 41):
+				self.get_company(driver, 1, 20, csvwriter)
+
+				driver.execute_script("window.scrollTo(0, 1200)")
+				Pause(driver).pause(3)
+
+				p = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/div[3]/ul[1]/li[26]/a[' + str(loop) + ']'
+				# = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/div[3]/ul[1]/li[26]/a
+				wait = WebDriverWait(driver, 0)
+				clickable = EC.element_to_be_clickable((By.XPATH, p))
+				link = wait.until(clickable)
+				link.click()
 
 		driver.quit()
 
