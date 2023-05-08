@@ -1,5 +1,7 @@
 import os
+import requests
 import csv
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -61,20 +63,20 @@ class Se:
 
 				arr = []
 				col = []
-				for j in range(1, 19):
-					path     = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(j) + ']/div[1]/div[1]'
+  
+				#creating request object
+				url = driver.current_url
+				req = requests.get(url)
 
-					#/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[5]/td[1]/span[1]/a[1]
-					if tr == 4 and j == 16:
-						path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[16]/div[1]/div[1]/a[1]'
+				#creating soup object
+				soup = BeautifulSoup(req.text, 'lxml')
 
-					print(p)
-					print(path)
-					print(j)
-					li = driver.find_element(By.XPATH, path)
-					col.append(li.text)
+				for ul in soup.select("ul.flexi"):
+					for span in ul.select("span"):
+						print(span.text)
+					print("-" * 60)
+
 				arr.append(col)
-				print(arr)	
 
 				#writing the data rows 
 				csvwriter.writerows(arr)
@@ -88,7 +90,7 @@ class Se:
 		driver = webdriver.Edge(options = option)
 		driver.get('https://www.mpmadirectory.org.my/all-members')
 
-		self.get_company(driver, 1, 20)
+		self.get_company(driver, 1, 1)
 
 		driver.quit()
 
