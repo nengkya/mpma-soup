@@ -72,8 +72,11 @@ class Se:
 				soup = BeautifulSoup(req.text, 'lxml')
 
 				for ul in soup.select("ul.flexi"):
-					for span in ul.select("span"):
-						print(span.text)
+					i = 1
+					for div in ul.select("div"):
+						if not (i % 2 == 0):
+							print(i, div.text)
+						i += 1
 					print("-" * 60)
 
 				arr.append(col)
