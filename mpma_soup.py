@@ -112,10 +112,9 @@ class Se:
 				self.get_company(driver, 1, 20, csvwriter)
 
 				driver.execute_script("window.scrollTo(0, 1200)")
-				Pause(driver).pause(3)
+				Pause(driver).pause(1)
 
-				p = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/div[3]/ul[1]/li[26]/a[' + str(loop) + ']'
-				# = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/div[3]/ul[1]/li[26]/a
+				p = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/div[3]/ul[1]/li[26]/a[1]'
 				wait = WebDriverWait(driver, 0)
 				clickable = EC.element_to_be_clickable((By.XPATH, p))
 				link = wait.until(clickable)
