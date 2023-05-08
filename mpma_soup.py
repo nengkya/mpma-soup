@@ -27,10 +27,31 @@ class Se:
 
 	def get_header(self, driver):
 		fields = []
-		for list in range(1,19):
-			path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(list) + ']/div[1]/span[1]'
-			header = driver.find_element(By.XPATH, path)
-			fields.append(header.text)
+
+		driver.execute_script("window.scrollTo(0,  650)")
+		Pause(driver).pause(1)
+
+		path = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[4]/td[1]/span[1]/a[1]'
+		wait = WebDriverWait(driver, 0)
+		clickable = EC.element_to_be_clickable((By.XPATH, path))
+		link = wait.until(clickable)
+		link.click()
+
+		#creating request object
+		url = driver.current_url
+		req = requests.get(url)
+
+		#creating soup object
+		soup = BeautifulSoup(req.text, 'lxml')
+
+		for ul in soup.select("ul.flexi"):
+			for span in ul.select("span"):
+				fields.append(span.text)
+				print(span.text)
+
+			print("-" * 60)
+
+		driver.back()
 
 		return fields 
 
@@ -43,9 +64,11 @@ class Se:
 			#creating a csv writer object 
 			csvwriter = csv.writer(csvfile) 
 
+			#writing the fields 
+			fields = self.get_header(driver)
+			csvwriter.writerow(fields) 
+
 			for tr in range(list1, list2 + 1):
-				if tr ==  1:
-					driver.execute_script("window.scrollTo(0,  650)")
 				if tr == 11:
 					driver.execute_script("window.scrollTo(0, 1200)")
 				Pause(driver).pause(1)
@@ -55,11 +78,6 @@ class Se:
 				clickable = EC.element_to_be_clickable((By.XPATH, p))
 				link = wait.until(clickable)
 				link.click()
-
-				#writing the fields 
-				if tr == 1:
-					fields = self.get_header(driver)
-					csvwriter.writerow(fields) 
 
 				arr = []
 				col = []
@@ -77,19 +95,12 @@ class Se:
 						if (not (i % 2 == 0)) and (not i == 27):
 							print(i, div.text)
 
-						'''
 						if i == 27:
-						path     = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(j) + ']/div[1]/div[1]'
-
-						#/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[5]/td[1]/span[1]/a[1]
-						if tr == 4 and j == 16:
-							path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[16]/div[1]/div[1]/a[1]'
-
-						print(p)
-						print(path)
-						print(j)
-						li = driver.find_element(By.XPATH, path)
-						'''
+							path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[14]/div[1]/div[1]'
+							li = driver.find_element(By.XPATH, path)
+							print(p)
+							print(path)
+							print(li.text)
 
 						i += 1
 					print("-" * 60)

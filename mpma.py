@@ -26,8 +26,8 @@ class Se:
 	def get_header(self, driver):
 		fields = []
 		for list in range(1,19):
-			path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(list) + ']/div[1]/span[1]'
-			header = driver.find_element(By.XPATH, path)
+			company_header_path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(list) + ']/div[1]/span[1]'
+			header = driver.find_element(By.XPATH, company_header_path)
 			fields.append(header.text)
 
 		return fields 
@@ -42,15 +42,15 @@ class Se:
 			csvwriter = csv.writer(csvfile) 
 
 			for tr in range(list1, list2 + 1):
-				if tr ==  1:
+				if tr <  11:
 					driver.execute_script("window.scrollTo(0,  650)")
 				if tr == 11:
 					driver.execute_script("window.scrollTo(0, 1200)")
 				Pause(driver).pause(1)
 
-				p = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[' + str(tr) + ']/td[1]/span[1]/a[1]'
+				main_page_path = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[' + str(tr) + ']/td[1]/span[1]/a[1]'
 				wait = WebDriverWait(driver, 0)
-				clickable = EC.element_to_be_clickable((By.XPATH, p))
+				clickable = EC.element_to_be_clickable((By.XPATH, main_page_path))
 				link = wait.until(clickable)
 				link.click()
 
@@ -61,18 +61,19 @@ class Se:
 
 				arr = []
 				col = []
-				for j in range(1, 19):
-					path     = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(j) + ']/div[1]/div[1]'
+				li_limit = 23
+				for j in range(1, li_limit):
+					company_value_path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(j) + ']/div[1]/div[1]'
 
-					#/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[5]/td[1]/span[1]/a[1]
 					if tr == 4 and j == 16:
-						path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[16]/div[1]/div[1]/a[1]'
+						company_value_path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[16]/div[1]/div[1]/a[1]'
 
-					print(p)
-					print(path)
 					print(j)
-					li = driver.find_element(By.XPATH, path)
+					print(main_page_path)
+					print(company_value_path)
+					li = driver.find_element(By.XPATH, company_value_path)
 					col.append(li.text)
+
 				arr.append(col)
 				print(arr)	
 
@@ -88,7 +89,7 @@ class Se:
 		driver = webdriver.Edge(options = option)
 		driver.get('https://www.mpmadirectory.org.my/all-members')
 
-		self.get_company(driver, 1, 1)
+		self.get_company(driver, 3, 4)
 
 		driver.quit()
 
