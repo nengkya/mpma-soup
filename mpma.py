@@ -1,12 +1,9 @@
 import os
-import pandas as pd
 import csv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 
 
@@ -72,19 +69,7 @@ class Se:
 					arr.append(col)
 				print(arr)	
 
-				'''
-				fields = []
-				for loop in range(1, 19):
-
-					path = "//*[@id='flexicontent']/div[6]/ul/li[" + str(loop) + "]/div/div"
-
-					li = driver.find_element(By.XPATH, path)
-					
-					fields.append(li.text)
-				'''
-
 				#writing the data rows 
-				#csvwriter.writerows(rows)
 				csvwriter.writerows(arr)
 
 			driver.back()
@@ -97,9 +82,9 @@ class Se:
 		driver.get('https://www.mpmadirectory.org.my/all-members')
 
 		driver.execute_script("window.scrollTo(0,  650)")
-		self.get_company(driver,  1, 1)
+		self.get_company(driver,  1, 10)
 		driver.execute_script("window.scrollTo(0, 1200)")
-		#self.get_company(driver, 11, 20)
+		self.get_company(driver, 11, 20)
 
 		driver.quit()
 
