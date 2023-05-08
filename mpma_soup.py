@@ -74,8 +74,23 @@ class Se:
 				for ul in soup.select("ul.flexi"):
 					i = 1
 					for div in ul.select("div"):
-						if not (i % 2 == 0):
+						if (not (i % 2 == 0)) and (not i == 27):
 							print(i, div.text)
+
+						'''
+						if i == 27:
+						path     = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[' + str(j) + ']/div[1]/div[1]'
+
+						#/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[5]/td[1]/span[1]/a[1]
+						if tr == 4 and j == 16:
+							path = '/html/body/div[2]/div[1]/section[4]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/ul[1]/li[16]/div[1]/div[1]/a[1]'
+
+						print(p)
+						print(path)
+						print(j)
+						li = driver.find_element(By.XPATH, path)
+						'''
+
 						i += 1
 					print("-" * 60)
 

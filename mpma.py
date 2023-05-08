@@ -88,7 +88,7 @@ class Se:
 		driver = webdriver.Edge(options = option)
 		driver.get('https://www.mpmadirectory.org.my/all-members')
 
-		self.get_company(driver, 1, 20)
+		self.get_company(driver, 1, 1)
 
 		driver.quit()
 
