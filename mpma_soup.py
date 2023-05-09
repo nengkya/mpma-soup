@@ -58,41 +58,41 @@ class Se:
 
 	def get_company(self, driver, list1, list2, csvwriter):
 
-			for tr in range(list1, list2 + 1):
-				if tr  < 11:
-					driver.execute_script("window.scrollTo(0,  650)")
-				if tr == 11:
-					driver.execute_script("window.scrollTo(0, 1200)")
-				Pause(driver).pause(1)
+		for tr in range(list1, list2 + 1):
+			if tr  < 11:
+				driver.execute_script("window.scrollTo(0,  650)")
+			if tr == 11:
+				driver.execute_script("window.scrollTo(0, 1200)")
+			Pause(driver).pause(1)
 
-				p = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[' + str(tr) + ']/td[1]/span[1]/a[1]'
-				wait = WebDriverWait(driver, 0)
-				clickable = EC.element_to_be_clickable((By.XPATH, p))
-				link = wait.until(clickable)
-				link.click()
+			p = '/html/body/div[2]/div[1]/section[5]/div[1]/div[1]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[' + str(tr) + ']/td[1]/span[1]/a[1]'
+			wait = WebDriverWait(driver, 0)
+			clickable = EC.element_to_be_clickable((By.XPATH, p))
+			link = wait.until(clickable)
+			link.click()
 
-				arr = []
-				col = []
-  
-				#creating request object
-				url = driver.current_url
-				req = requests.get(url)
+			arr = []
+			col = []
 
-				#creating soup object
-				soup = BeautifulSoup(req.text, 'lxml')
+			#creating request object
+			url = driver.current_url
+			req = requests.get(url)
 
-				for ul in soup.select("ul.flexi"):
-					for div in ul:
-						col.append(div.text)
-						print(div.text)
+			#creating soup object
+			soup = BeautifulSoup(req.text, 'lxml')
 
-					arr.append(col)
-					print("-" * 60)
+			for ul in soup.select("ul.flexi"):
+				for div in ul:
+					col.append(div.text)
+					print(div.text)
 
-				#writing the data rows 
-				csvwriter.writerows(arr)
+				arr.append(col)
+				print("-" * 60)
 
-				driver.back()
+			#writing the data rows 
+			csvwriter.writerows(arr)
+
+			driver.back()
 
 
 	def components(self):
